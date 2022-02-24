@@ -1,16 +1,9 @@
 'use strict';
 
-const express = require('express');
+var forwarded = require('forwarded-for');
 
-// Constants
-const PORT = 8080;
-const HOST = '0.0.0.0';
+require('http').createServer(function (req, res) {
+  var address = forwarded(req, req.headers);
 
-// App
-const app = express();
-app.get('/', (req, res) => {
-  res.send('Hello World');
-});
-
-app.listen(PORT, HOST);
-console.log(`Running on http://${HOST}:${PORT}`);
+  res.end('Your ip address is '+ address.ip);
+}).listen(8080);
